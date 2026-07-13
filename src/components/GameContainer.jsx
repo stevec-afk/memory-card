@@ -14,13 +14,13 @@ function GameContainer(props) {
 
   return (
     <main className="game-grid">
-      {beavers.map((beaverName) => {
+      {beavers.map((beaver) => {
         // prettier-ignore
         return (
           <Card
-            key={beaverName}
-            name={beaverName}
-            onCardClick={onCardClick}
+          key={beaver.id} 
+          beaver={beaver} 
+          onCardClick={onCardClick}
           />
         );
       })}

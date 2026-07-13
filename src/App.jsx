@@ -2,17 +2,40 @@ import Header from "./components/Header.jsx";
 import GameContainer from "./components/GameContainer.jsx";
 import { useState, useEffect } from "react";
 
-const fetchedBeavers = ["Bob", "Trevor", "Kevin"];
-
 function App() {
-  const [beavers, setBeavers] = useState(fetchedBeavers);
+  const [beavers, setBeavers] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [clickedBeavers, setClickedBeavers] = useState([]);
   const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
-    // API call to load beaver data goes here
+    async function fetchBeavers() {
+      try {
+        const response = await fetch("http://localhost:8080/characters");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // Combine the different beaver arrays from the API response
+        const allEntities = [...data.Adult, ...data.Child, ...data.Bot];
+
+        // Transform raw data into clean objects.
+        const cleanBeavers = allEntities.map((character) => ({
+          id: character.Entity.EntityId,
+          name: character.Name,
+          image: character.ImagePath,
+          age: character.age,
+        }));
+
+        setBeavers(cleanBeavers);
+      } catch (error) {
+        console.error("failed to fetch Timberborn characters:", error);
+      }
+    }
+
+    fetchBeavers();
   }, []);
 
   function handleCardClick(cardId) {

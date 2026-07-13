@@ -1,13 +1,23 @@
 function Card(props) {
-  const { name, onCardClick } = props;
+  const {
+    beaver: { id, name, image, age },
+    onCardClick,
+  } = props;
+
   return (
-    <div className="beaver-card" onClick={() => onCardClick(name)}>
+    <div className="beaver-card" onClick={() => onCardClick(id)}>
       {/* Visual content for the card goes here */}
-      <div className="card-image-placeholder">
-        {/* Placeholder text until we hook up the API images */}
-        <span>[Image of {name}]</span>
+      <div className="card-image-container">
+        <img
+          src={`http://localhost:8080/${image}`}
+          alt={`${name} avatar`}
+          className="beaver-avatar"
+        />
       </div>
-      <h3 className="card-name">{name}</h3>
+      <div className="card-info">
+        <h3 className="card-name">{name}</h3>
+        <p className="card-age">Age: {age}</p>
+      </div>
     </div>
   );
 }
