@@ -12,7 +12,8 @@ function App() {
   useEffect(() => {
     async function fetchBeavers() {
       try {
-        const response = await fetch("http://localhost:8080/characters");
+        const response = await fetch("/api/MoreHttpApi/characters");
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

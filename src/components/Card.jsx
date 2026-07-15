@@ -8,8 +8,9 @@ function Card(props) {
     <div className="beaver-card" onClick={() => onCardClick(id)}>
       {/* Visual content for the card goes here */}
       <div className="card-image-container">
+        {/* prettier-ignore */}
         <img
-          src={`http://localhost:8080/${image}`}
+          src={`/api/MoreHttpApi/${image}`}
           alt={`${name} avatar`}
           className="beaver-avatar"
         />
