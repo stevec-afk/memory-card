@@ -1,0 +1,65 @@
+.beaver-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #121c16;
+  border: 2px solid #0c3426;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.beaver-card:hover {
+  transform: translateY(-5px);
+  border-color: #f1b922;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #0c3426;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.beaver-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #121c16;
+}
+
+.card-name {
+  color: #e2d9c5;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-age {
+  color: #42a834;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: rgba(66, 168, 52, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  width: max-content;
+}

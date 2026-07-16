@@ -1,10 +1,12 @@
+import "./Card.css";
+
 function Card(props) {
   const { beaver, onCardClick } = props;
 
   function getPublicAvatar(apiPath) {
-    if (!apiPath) return "/public/FolktailsBot.png";
+    if (!apiPath) return "/FolktailsBot.png";
     const fileName = apiPath.split("/").pop();
-    return `/public/${fileName}.png`;
+    return `/${fileName}.png`;
   }
 
   return (

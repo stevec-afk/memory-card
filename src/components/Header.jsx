@@ -1,3 +1,5 @@
+import "./Header.css";
+
 function Header(props) {
   const { currentScore, highScore } = props;
 
