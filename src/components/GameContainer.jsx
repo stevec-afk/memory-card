@@ -1,12 +1,13 @@
 import Card from "./Card.jsx";
 
 function GameContainer(props) {
-  const { beavers, onCardClick, isGameOver, onReset } = props;
+  const { beavers, onCardClick, isGameOver, onReset, currentScore } = props;
 
   if (isGameOver) {
     return (
       <div className="game-over-overlay">
         <h2>Game Over!</h2>
+        <p className="final-score">Final Score: {currentScore}</p>
         <button onClick={onReset}>Play Again</button>
       </div>
     );

@@ -26,60 +26,72 @@ function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [easterEggActive, setEasterEggActive] = useState(false);
 
-  useEffect(() => {
-    async function fetchBeavers() {
-      try {
-        const response = await fetch("/api/MoreHttpApi/characters");
+  async function fetchBeavers() {
+    try {
+      const response = await fetch("/api/MoreHttpApi/characters");
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        const adults = shuffleArray(data.Adult || []);
-        const kits = shuffleArray(data.Child || []);
-        const bots = shuffleArray(data.Bot || []);
-        const totalAvailable = adults.length + kits.length + bots.length;
-
-        // Easter Egg Trigger: Absolute colony wipeout condition
-        if (totalAvailable === 0) {
-          setEasterEggActive(true);
-          setBeavers([]);
-          return;
-        }
-
-        // Dynamically scale card maximum limit down if total alive is below 12
-        const targetDeckSize = Math.min(12, totalAvailable);
-        const selectedEntities = [];
-
-        // Round-Robin Distribution loop
-        while (selectedEntities.length < targetDeckSize) {
-          if (adults.length > 0) selectedEntities.push(adults.shift());
-          if (selectedEntities.length === targetDeckSize) break;
-
-          if (kits.length > 0) selectedEntities.push(kits.shift());
-          if (selectedEntities.length === targetDeckSize) break;
-
-          if (bots.length > 0) selectedEntities.push(bots.shift());
-        }
-
-        // Transform raw data into clean objects.
-        const cleanBeavers = selectedEntities.map((character) => ({
-          id: character.Entity.EntityId,
-          name: character.Name,
-          image: character.ImagePath,
-          age: character.Age,
-        }));
-
-        // Final random layout shuffle before saving to state
-        setBeavers(shuffleArray(cleanBeavers));
-        setEasterEggActive(false);
-      } catch (error) {
-        console.error("failed to fetch Timberborn characters:", error);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
+
+      const adults = shuffleArray(data.Adult || []);
+      const kits = shuffleArray(data.Child || []);
+      const bots = shuffleArray(data.Bot || []);
+
+      // Easter Egg Trigger: Absolute colony wipeout condition
+      const totalAvailable = adults.length + kits.length + bots.length;
+      if (totalAvailable === 0) {
+        setEasterEggActive(true);
+        setBeavers([]);
+        return;
+      }
+
+      // Dynamically scale card maximum limit down if total alive is below 12
+      const targetDeckSize = Math.min(12, totalAvailable);
+      const selectedEntities = [];
+
+      // Round-Robin Distribution loop
+      while (selectedEntities.length < targetDeckSize) {
+        if (adults.length > 0) selectedEntities.push(adults.shift());
+        if (selectedEntities.length === targetDeckSize) break;
+
+        if (kits.length > 0) selectedEntities.push(kits.shift());
+        if (selectedEntities.length === targetDeckSize) break;
+
+        if (bots.length > 0) selectedEntities.push(bots.shift());
+      }
+
+      // Transform raw data into clean objects.
+      const cleanBeavers = selectedEntities.map((character) => ({
+        id: character.Entity.EntityId,
+        name: character.Name,
+        image: character.ImagePath,
+        age: character.Age,
+      }));
+
+      // Final random layout shuffle before saving to state
+      setBeavers(shuffleArray(cleanBeavers));
+      setEasterEggActive(false);
+    } catch (error) {
+      console.error("failed to fetch Timberborn characters:", error);
+    }
+  }
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function initializeGame() {
+      await fetchBeavers();
     }
 
-    fetchBeavers();
+    if (isMounted) {
+      initializeGame();
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   function handleCardClick(cardId) {
@@ -101,6 +113,7 @@ function App() {
     setCurrentScore(0);
     setClickedBeavers([]);
     setIsGameOver(false);
+    fetchBeavers();
   }
 
   return (
@@ -120,6 +133,7 @@ function App() {
           onCardClick={handleCardClick}
           isGameOver={isGameOver}
           onReset={resetGame}
+          currentScore={currentScore}
         />
       )}
     </div>
