@@ -69,3 +69,12 @@ body {
   border-color: #f1b922;
   color: #ffffff;
 }
+
+.final-score {
+  color: #f1b922;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
