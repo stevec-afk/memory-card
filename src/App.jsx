@@ -27,7 +27,7 @@ function App() {
           id: character.Entity.EntityId,
           name: character.Name,
           image: character.ImagePath,
-          age: character.age,
+          age: character.Age,
         }));
 
         setBeavers(cleanBeavers);
