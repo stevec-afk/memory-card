@@ -10,12 +10,55 @@ function shuffleArray(beavers) {
   for (let i = shuffledBeavers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
 
-    // Swap beavers at indices i and j
+    // Swap beavers at indices i(current index) and j(random index)
     const temp = shuffledBeavers[i];
     shuffledBeavers[i] = shuffledBeavers[j];
     shuffledBeavers[j] = temp;
   }
   return shuffledBeavers;
+}
+
+function transformBeaverData(rawData) {
+  if (!rawData) return { gameDeck: [], isExtinct: true };
+
+  const adults = shuffleArray(rawData.Adult || []);
+  const kits = shuffleArray(rawData.Child || []);
+  const bots = shuffleArray(rawData.Bot || []);
+
+  // Easter Egg Trigger: Absolute colony wipeout condition
+  // (catches rare edge case of 0 beavers alive, but still recoverable colony)
+  const totalAvailable = adults.length + kits.length + bots.length;
+  if (totalAvailable === 0) {
+    return { gameDeck: [], isExtinct: true };
+  }
+
+  // Round-Robin Distribution loop - ensure a variety of beavers
+  // Maximum card limit is dynamically scaled down if total alive is below 12
+  const targetDeckSize = Math.min(12, totalAvailable);
+  const selectedEntities = [];
+  while (selectedEntities.length < targetDeckSize) {
+    if (adults.length > 0) selectedEntities.push(adults.shift());
+    if (selectedEntities.length === targetDeckSize) break;
+
+    if (kits.length > 0) selectedEntities.push(kits.shift());
+    if (selectedEntities.length === targetDeckSize) break;
+
+    if (bots.length > 0) selectedEntities.push(bots.shift());
+  }
+
+  // Transform raw data into clean objects.
+  const gameDeck = selectedEntities.map((character) => ({
+    id: character.Entity.EntityId,
+    name: character.Name,
+    image: character.ImagePath,
+    age: character.Age,
+  }));
+
+  return {
+    // Final random layout shuffle before returning the deck of beavers
+    gameDeck: shuffleArray(gameDeck),
+    isExtinct: false,
+  };
 }
 
 function App() {
@@ -34,45 +77,9 @@ function App() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-
-      const adults = shuffleArray(data.Adult || []);
-      const kits = shuffleArray(data.Child || []);
-      const bots = shuffleArray(data.Bot || []);
-
-      // Easter Egg Trigger: Absolute colony wipeout condition
-      const totalAvailable = adults.length + kits.length + bots.length;
-      if (totalAvailable === 0) {
-        setEasterEggActive(true);
-        setBeavers([]);
-        return;
-      }
-
-      // Dynamically scale card maximum limit down if total alive is below 12
-      const targetDeckSize = Math.min(12, totalAvailable);
-      const selectedEntities = [];
-
-      // Round-Robin Distribution loop
-      while (selectedEntities.length < targetDeckSize) {
-        if (adults.length > 0) selectedEntities.push(adults.shift());
-        if (selectedEntities.length === targetDeckSize) break;
-
-        if (kits.length > 0) selectedEntities.push(kits.shift());
-        if (selectedEntities.length === targetDeckSize) break;
-
-        if (bots.length > 0) selectedEntities.push(bots.shift());
-      }
-
-      // Transform raw data into clean objects.
-      const cleanBeavers = selectedEntities.map((character) => ({
-        id: character.Entity.EntityId,
-        name: character.Name,
-        image: character.ImagePath,
-        age: character.Age,
-      }));
-
-      // Final random layout shuffle before saving to state
-      setBeavers(shuffleArray(cleanBeavers));
-      setEasterEggActive(false);
+      const { gameDeck, isExtinct } = transformBeaverData(data);
+      setEasterEggActive(isExtinct);
+      setBeavers(gameDeck);
     } catch (error) {
       console.error("failed to fetch Timberborn characters:", error);
     }
