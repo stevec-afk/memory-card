@@ -69,6 +69,7 @@ function App() {
   const [clickedBeavers, setClickedBeavers] = useState([]);
   const [isGameOver, setIsGameOver] = useState(false);
   const [easterEggActive, setEasterEggActive] = useState(false);
+  const [errorActive, setErrorActive] = useState(false);
 
   async function fetchBeavers() {
     try {
@@ -81,6 +82,7 @@ function App() {
       return transformBeaverData(data);
     } catch (error) {
       console.error("failed to fetch Timberborn characters:", error);
+      setErrorActive(true);
       return { gameDeck: [], isExtinct: false };
     }
   }
@@ -98,6 +100,7 @@ function App() {
       if (isMounted) {
         setEasterEggActive(result.isExtinct);
         setBeavers(result.gameDeck);
+        setErrorActive(result.gameDeck.length === 0 && !result.isExtinct);
       }
     })();
 
@@ -123,18 +126,46 @@ function App() {
     }
   }
 
-  function resetGame() {
+  async function resetGame() {
     setCurrentScore(0);
     setClickedBeavers([]);
     setIsGameOver(false);
-    fetchBeavers();
+
+    const result = await fetchBeavers();
+    setEasterEggActive(result.isExtinct);
+    setBeavers(result.gameDeck);
+    if (result.gameDeck.length > 0) {
+      setErrorActive(false);
+    }
   }
 
   return (
     <div className="app-container-wrapper">
       <Header currentScore={currentScore} highScore={highScore} />
-      {/* Conditional display: check if easter egg should overwrite game canvas */}
-      {easterEggActive ? (
+      {errorActive ? (
+        <div className="api-error-panel">
+          <h2>Cannot Connect to Timberborn API</h2>
+          <p>
+            The frontend application was unable to retrieve data from your game server.
+          </p>
+          <div className="troubleshooting-steps">
+            <h3>Troubleshooting Local Setup:</h3>
+            <ul>
+              <li>Ensure Timberborn is running and your save file is active.</li>
+              <li>
+                Verify the MoreHttpApi mod is installed and enabled in your game client.
+              </li>
+              <li>
+                Double-check that your Vite dev server proxy configuration matches your
+                API port.
+              </li>
+            </ul>
+          </div>
+          <button onClick={resetGame} className="retry-btn">
+            Retry Connection
+          </button>
+        </div>
+      ) : easterEggActive ? (
         <div className="extinction-easter-egg">
           <h2>Zero Beavers detected in your colony! </h2>
           <p>I hope you remembered your emergency breeding pods...</p>
