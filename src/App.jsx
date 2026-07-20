@@ -18,6 +18,12 @@ function shuffleArray(beavers) {
   return shuffledBeavers;
 }
 
+// High score is saved to local storage so that is is persistent
+function getSavedHighScore() {
+  const savedScore = localStorage.getItem("timberborn_high_score");
+  return savedScore ? parseInt(savedScore, 10) : 0;
+}
+
 function transformBeaverData(rawData) {
   if (!rawData) return { gameDeck: [], isExtinct: true };
 
@@ -65,7 +71,7 @@ function transformBeaverData(rawData) {
 function App() {
   const [beavers, setBeavers] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(getSavedHighScore);
   const [clickedBeavers, setClickedBeavers] = useState([]);
   const [isGameOver, setIsGameOver] = useState(false);
   const [easterEggActive, setEasterEggActive] = useState(false);
@@ -110,6 +116,10 @@ function App() {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("timberborn_high_score", highScore.toString());
+  }, [highScore]);
 
   function handleCardClick(cardId) {
     if (clickedBeavers.includes(cardId)) {
