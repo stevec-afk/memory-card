@@ -1,6 +1,7 @@
 import Header from "./components/Header.jsx";
 import GameContainer from "./components/GameContainer.jsx";
 import { useState, useEffect } from "react";
+import "./ErrorPanel.css";
 
 // Fisher-yates Shuffle logic to shuffle an array of beavers
 function shuffleArray(beavers) {
@@ -154,23 +155,35 @@ function App() {
       <Header currentScore={currentScore} highScore={highScore} />
       {errorActive ? (
         <div className="api-error-panel">
+          <span className="error-badge">Connection Error</span>
           <h2>Cannot Connect to Timberborn API</h2>
           <p>
-            The frontend application was unable to retrieve data from your game server.
+            The frontend application received a 502 Bad Gateway while communicating with
+            your local port wrapper.
           </p>
           <div className="troubleshooting-steps">
-            <h3>Troubleshooting Local Setup:</h3>
+            <h3>Troubleshooting Action Steps:</h3>
             <ul>
-              <li>Ensure Timberborn is running and your save file is active.</li>
               <li>
-                Verify the MoreHttpApi mod is installed and enabled in your game client.
+                <strong>Mod Execution Check:</strong> Verify Timberborn is running, a save
+                game file is loaded, and characters are actively simulation-walking (the
+                API goes dead on the main menu layout).
               </li>
               <li>
-                Double-check that your Vite dev server proxy configuration matches your
-                API port.
+                <strong>Network Routing Mismatch:</strong> Look at your console trace. If
+                your proxy target is pointed at <code>localhost:5171</code> but your
+                running game engine output sits on a different custom socket, you must
+                align the target port inside your <code>vite.config.js</code> file.
+              </li>
+              <li>
+                <strong>Vite Proxy Sync Drop:</strong> The local development server proxy
+                cache can sometimes lose track of the loopback interface thread. If
+                clicking the button fails, restart your terminal container environment via{" "}
+                <code>npm run dev</code>.
               </li>
             </ul>
           </div>
+
           <button onClick={resetGame} className="retry-btn">
             Retry Connection
           </button>

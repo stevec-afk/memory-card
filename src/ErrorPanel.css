@@ -1,0 +1,126 @@
+.api-error-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  max-width: 650px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #121c16;
+  border: 3px solid #0c3426;
+  border-radius: 8px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.error-badge {
+  background-color: #a83434;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.api-error-panel h2 {
+  color: #f1b922;
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.api-error-panel > p {
+  color: #e2d9c5;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.troubleshooting-steps {
+  width: 100%;
+  background-color: rgba(12, 52, 38, 0.4);
+  border: 1px solid #0c3426;
+  border-radius: 6px;
+  padding: 25px;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.troubleshooting-steps h3 {
+  color: #e2d9c5;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #0c3426;
+  padding-bottom: 8px;
+}
+
+.troubleshooting-steps ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.troubleshooting-steps li {
+  color: #e2d9c5;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 20px;
+}
+
+.troubleshooting-steps li::before {
+  content: "■";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #f1b922;
+  font-size: 10px;
+}
+
+.troubleshooting-steps strong {
+  color: #ffffff;
+}
+
+.troubleshooting-steps code {
+  background-color: #121c16;
+  color: #f1b922;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.retry-btn {
+  background-color: #0c3426;
+  color: #e2d9c5;
+  border: 2px solid #42a834;
+  padding: 14px 40px;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.retry-btn:hover {
+  background-color: #42a834;
+  border-color: #f1b922;
+  color: #ffffff;
+}
