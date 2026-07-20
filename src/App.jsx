@@ -26,7 +26,8 @@ function transformBeaverData(rawData) {
   const bots = shuffleArray(rawData.Bot || []);
 
   // Easter Egg Trigger: Absolute colony wipeout condition
-  // (catches rare edge case of 0 beavers alive, but still recoverable colony)
+  // (This catches rare edge case of the game state where there are 0 beavers alive,
+  // but the colony is still recoverable)
   const totalAvailable = adults.length + kits.length + bots.length;
   if (totalAvailable === 0) {
     return { gameDeck: [], isExtinct: true };
@@ -77,26 +78,32 @@ function App() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      const { gameDeck, isExtinct } = transformBeaverData(data);
-      setEasterEggActive(isExtinct);
-      setBeavers(gameDeck);
+      return transformBeaverData(data);
     } catch (error) {
       console.error("failed to fetch Timberborn characters:", error);
+      return { gameDeck: [], isExtinct: false };
     }
   }
 
   useEffect(() => {
     let isMounted = true;
 
-    async function initializeGame() {
-      await fetchBeavers();
-    }
+    // Initialize the game
+    (async function () {
+      const result = await fetchBeavers();
 
-    if (isMounted) {
-      initializeGame();
-    }
+      // because the data is retrieved asyncronously,
+      // it is possible that the component is destroyed before getting a response.
+      // So we check, and only then set the state if the component is still mounted.
+      if (isMounted) {
+        setEasterEggActive(result.isExtinct);
+        setBeavers(result.gameDeck);
+      }
+    })();
 
     return () => {
+      // Cleanup on component destruction,
+      // prevents async function from trying to set state on dead component
       isMounted = false;
     };
   }, []);
