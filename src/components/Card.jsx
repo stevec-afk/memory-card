@@ -11,9 +11,7 @@ function Card(props) {
 
   return (
     <div className="beaver-card" onClick={() => onCardClick(beaver.id)}>
-      {/* Visual content for the card goes here */}
       <div className="card-image-container">
-        {/* prettier-ignore */}
         <img
           src={getPublicAvatar(beaver.image)}
           alt={`${name} avatar`}

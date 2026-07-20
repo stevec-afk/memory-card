@@ -19,7 +19,7 @@ function shuffleArray(beavers) {
   return shuffledBeavers;
 }
 
-// High score is saved to local storage so that is is persistent
+// High score is persistant across sessions by saving to  local storage
 function getSavedHighScore() {
   const savedScore = localStorage.getItem("timberborn_high_score");
   return savedScore ? parseInt(savedScore, 10) : 0;
@@ -34,13 +34,13 @@ function transformBeaverData(rawData) {
 
   // Easter Egg Trigger: Absolute colony wipeout condition
   // (This catches rare edge case of the game state where there are 0 beavers alive,
-  // but the colony is still recoverable)
+  // but the colony is still recoverable via the Ironteeth's advanced breeding pods)
   const totalAvailable = adults.length + kits.length + bots.length;
   if (totalAvailable === 0) {
     return { gameDeck: [], isExtinct: true };
   }
 
-  // Round-Robin Distribution loop - ensure a variety of beavers
+  // Round-Robin distribution loop - this ensures a variety of beavers are pulled from the game
   // Maximum card limit is dynamically scaled down if total alive is below 12
   const targetDeckSize = Math.min(12, totalAvailable);
   const selectedEntities = [];
