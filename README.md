@@ -17,34 +17,21 @@ To run this application, you must own a copy of _Timberborn_, install the requir
 - **Persistent High Scores:** Your high score is saved using `localStorage`.
 - **Timberborn API Connection:** Uses the live timberborn API to pull beavers directly from your active game.
 - **Dynamic Shuffle:** Automatically ensures an equal split of Adults, Kits, and Bots based entirely on your live game's current demographics.
-- **Micro-Colony Scaling:** Automatically adjusts the maximum deck size downward if your active save file has fewer than 12 total surviving beavers.
-- **Robust Error handling:** Includes a Connection Error panel detailing active debugging solutions in the event of an API or port timeout.
-- **Doomsday Easter Egg:** A custom messsage is displayed if a specific game state is detected where there are no beavers, but its not game over! (hint: you need to be playing the ironteeth faction for this to happen!)
+- **Robust Error Handling:** Includes a Connection Error panel detailing active debugging solutions in the event of an API timeout or connection error.
+- **Doomsday Easter Egg:** A custom message is displayed if a specific game state is detected where there are no beavers, but its not game over! (hint: you need to be playing the ironteeth faction for this to happen!)
 
 ---
 
-## Prerequisites:
+### Mod prerequisites:
 
-**A copy of Timberborn, and the following mods:**
-
-- More HTTP API
-- Moddable Timberborn
-- TimberUI
-- Mod Settings
-- Harmony
-
----
-
-### Tested with the following mod versions:
-
-| Software / Component                  | Version / Build       |
-| :------------------------------------ | :-------------------- |
-| **Game Version**                      | `1.0.13.1-b769e88-sw` |
-| **Harmony**                           | `2.4.1`               |
-| **Mod Settings** (`eMka.ModSettings`) | `1.0.13.0`            |
-| **TimberUi**                          | `10.1.6`              |
-| **Moddable Timberborn**               | `10.6.1`              |
-| **More HTTP API** (`MoreHttpApi`)     | `10.0.1`              |
+| Software / Component           | Tested Version / Build |
+| :----------------------------- | :--------------------- |
+| **Game Version (main branch)** | `1.0.13.1-b769e88-sw`  |
+| **Harmony**                    | `2.4.1`                |
+| **Mod Settings**               | `1.0.13.0`             |
+| **TimberUi**                   | `10.1.6`               |
+| **Moddable Timberborn**        | `10.6.1`               |
+| **More HTTP API**              | `10.0.1`               |
 
 ---
 
@@ -54,15 +41,15 @@ To spin this project up on your machine, follow these steps:
 
 ### 1. Game Client & Mod Prerequisites
 
-1. Ensure you have **Timberborn** installed on your machine via steam.
-2. Install the [More HTTP API](https://steamcommunity.com/sharedfiles/filedetails/?id=3729176372) mod from the steam workshop and all its dependancies.
+1. Ensure you have **Timberborn** installed on your machine via Steam.
+2. Install the [More HTTP API](https://steamcommunity.com/sharedfiles/filedetails/?id=3729176372) mod from the steam workshop and all its dependencies (see above for the exact game & mod versions this app was tested with). Newer versions SHOULD still work, but YMMV.
 
 ### 2. Initializing Your Save Game
 
 1. Open the Timberborn client and either start a new game or load an active save game file.
-2. Check that the mods are active and running, and note which port is configured (port `5171` is used by default).
+2. Check that the mods are active and running, and note which port is configured in the mod settings (port `5171` is used by default).
 
-### 3. Staging the Web Frontend
+### 3. Web Frontend
 
 1. Clone this repository to your local computer.
 2. Open your terminal inside the root project directory and install the required dependencies:
@@ -79,7 +66,7 @@ To spin this project up on your machine, follow these steps:
    ```bash
    npm run dev
    ```
-5. Open your web browswer and go to the local vite server: `http://localhost:5173`.
+5. Open your web browser and navigate to the local vite server: `http://localhost:5173`.
 
 ---
 
