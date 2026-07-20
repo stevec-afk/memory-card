@@ -18,14 +18,39 @@ To run this application, you must own a copy of _Timberborn_, install the requir
 - **Timberborn API Connection:** Uses the live timberborn API to pull beavers directly from your active game.
 - **Dynamic Shuffle:** Automatically ensures an equal split of Adults, Kits, and Bots based entirely on your live game's current demographics.
 - **Micro-Colony Scaling:** Automatically adjusts the maximum deck size downward if your active save file has fewer than 12 total surviving beavers.
-- **Robust Error handling:** Includes an emergency crimson Connection Error panel detailing active debugging solutions in the event of an API or port timeout.
+- **Robust Error handling:** Includes a Connection Error panel detailing active debugging solutions in the event of an API or port timeout.
 - **Doomsday Easter Egg:** A custom messsage is displayed if a specific game state is detected where there are no beavers, but its not game over! (hint: you need to be playing the ironteeth faction for this to happen!)
+
+---
+
+## Prerequisites:
+
+**A copy of Timberborn, and the following mods:**
+
+- More HTTP API
+- Moddable Timberborn
+- TimberUI
+- Mod Settings
+- Harmony
+
+---
+
+### Tested with the following mod versions:
+
+| Software / Component                  | Version / Build       |
+| :------------------------------------ | :-------------------- |
+| **Game Version**                      | `1.0.13.1-b769e88-sw` |
+| **Harmony**                           | `2.4.1`               |
+| **Mod Settings** (`eMka.ModSettings`) | `1.0.13.0`            |
+| **TimberUi**                          | `10.1.6`              |
+| **Moddable Timberborn**               | `10.6.1`              |
+| **More HTTP API** (`MoreHttpApi`)     | `10.0.1`              |
 
 ---
 
 ## Local Setup & Installation Instructions
 
-To spin this project up on your machine, follow these three sequential installation blocks:
+To spin this project up on your machine, follow these steps:
 
 ### 1. Game Client & Mod Prerequisites
 
